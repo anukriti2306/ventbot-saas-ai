@@ -1,9 +1,7 @@
-import express from "express";
-//app variable
-const app = express();
+// index.ts ✅ (ONLY ONE listen here)
+import app from "./app.js";
+import { connectToDatabase } from "./db/connection.js";
 
-//define middleware
-app.use(express.json());
-
-//connections and listeners
-app.listen(5000, ()=>console.log("Server Open")); 
+connectToDatabase().then(() => {
+  app.listen(5000, () => console.log("Server is Open and Connected successfully."));
+}).catch((err) => console.log(err));
