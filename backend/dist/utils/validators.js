@@ -14,10 +14,16 @@ const validate = (validations) => {
         return res.status(422).json({ errors: errors.array() });
     };
 };
-const signupValidator = [
-    body("name").notEmpty().withMessage("Name is required."),
+const loginValidator = [
+    //body("name").notEmpty().withMessage("Name is required."), not needed
     body("email").trim().isEmail().withMessage("Email is required."),
     body("password").trim().isLength({ min: 6 }).withMessage("Password should contain atleast 6 chars."),
 ];
-export { validate, signupValidator };
+const signupValidator = [
+    body("name").notEmpty().withMessage("Name is required."),
+    //body("email").trim().isEmail().withMessage("Email is required."),
+    //body("password").trim().isLength({min:6}).withMessage("Password should contain atleast 6 chars."),
+    ...loginValidator,
+];
+export { validate, signupValidator, loginValidator };
 //# sourceMappingURL=validators.js.map
