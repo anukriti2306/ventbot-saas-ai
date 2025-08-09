@@ -26,5 +26,5 @@ body{
 
 .MuiOutlinedInput-input-root.Mui-focused, 
 .MuiOutlinedInput-notchedOutline{
-  border-color: pink !important;
+  border-color: plum !important;
 }
