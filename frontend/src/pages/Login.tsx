@@ -2,7 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
 import CustomizedInput from '../components/shared/CustomizedInput';
 import { IoIosLogIn } from "react-icons/io";
-import toast from 'react-hot-toast';
+import {toast} from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 const Login = () => {
   const auth = useAuth();
