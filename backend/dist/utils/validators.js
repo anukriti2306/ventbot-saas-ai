@@ -25,5 +25,8 @@ const signupValidator = [
     //body("password").trim().isLength({min:6}).withMessage("Password should contain atleast 6 chars."),
     ...loginValidator,
 ];
-export { validate, signupValidator, loginValidator };
+const chatCompletionValidator = [
+    body("message").notEmpty().withMessage("Message is required."),
+];
+export { validate, signupValidator, loginValidator, chatCompletionValidator };
 //# sourceMappingURL=validators.js.map

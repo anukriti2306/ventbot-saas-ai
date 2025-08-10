@@ -1,7 +1,207 @@
-import React from 'react';
+import { Avatar, Box, Button, IconButton, Typography } from "@mui/material";
+import React, { useRef } from "react";
+import { useAuth } from "../context/AuthContext";
+import { red } from "@mui/material/colors";
+import { IoMdSend } from "react-icons/io";
+
+const chatMessages = [
+  { role: "user", content: "Hello, can you tell me the weather forecast for tomorrow?" },
+  { role: "assistant", content: "Sure! I can help with that. Please provide me with your location." },
+  { role: "user", content: "I'm in New York City." },
+  { role: "assistant", content: "Great! Give me a moment to fetch the weather information for New York City." },
+  { role: "assistant", content: "The weather forecast for New York City tomorrow is: Sunny with a high of 78°F and a low of 62°F." },
+  { role: "user", content: "That sounds perfect! Thanks for the information." },
+];
 
 export const Chat = () => {
+  const inputRef = useRef<HTMLInputElement|null>(null);
+  const auth = useAuth();
+  const handleSubmit = async() =>{
+    console.log(inputRef.current?.value);
+  };
+  const getInitials = (name?: string) => {
+    if (!name) return "";
+    const parts = name.trim().split(" ");
+    const firstInitial = parts[0]?.[0] || "";
+    const secondInitial = parts[1]?.[0] || "";
+    return (firstInitial + secondInitial).toUpperCase();
+  };
+
   return (
-    <div>Chat</div>
-  )
-}
+    <Box
+      sx={{
+        display: "flex",
+        flex: 1,
+        width: "100%",
+        height: "100%",
+        mt: 3,
+        gap: 3,
+      }}
+    >
+      {/* Sidebar */}
+      <Box sx={{ display: { md: "flex", xs: "none", sm: "none" }, flex: 0.25, flexDirection: "column" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            bgcolor: "rgb(17,29,39)",
+            borderRadius: 5,
+            mx: 3,
+            p: 3,
+            height: "100%",
+          }}
+        >
+          <Avatar
+            sx={{
+              mx: "auto",
+              my: 2,
+              bgcolor: "white",
+              color: "black",
+              fontWeight: 700,
+              width: 60,
+              height: 60,
+            }}
+          >
+            {getInitials(auth?.user?.name) || "U"}
+          </Avatar>
+
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: "center",
+              fontFamily: "Work Sans",
+              fontWeight: 600,
+              mb: 1,
+              color: "white",
+            }}
+          >
+            You are talking to a ventbot
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{ textAlign: "center", fontFamily: "Work Sans", color: "gray" }}
+          >
+            You can share your feelings without hesitation, but don't give away personal information unnecessarily.
+          </Typography>
+
+          <Button
+            sx={{
+              width: "200px",
+              mt: "auto",
+              color: "white",
+              fontWeight: "700",
+              borderRadius: 3,
+              mx: "auto",
+              bgcolor: red[300],
+              ":hover": { bgcolor: red.A400 },
+            }}
+          >
+            CLEAR CONVERSATION
+          </Button>
+        </Box>
+      </Box>
+
+      {/* Main Chat Area */}
+      <Box sx={{ display: "flex", flex: { md: 0.75, xs: 1, sm: 1 }, flexDirection: "column", px: 3 }}>
+        <Typography sx={{ textAlign: "center", fontSize: "28px", fontWeight: 600, color: "white", mb: 2 }}>
+          Model - GPT 3.5 Turbo
+        </Typography>
+
+        <Box
+          sx={{
+            flex: 1,
+            borderRadius: 3,
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+            px: 4,
+            py: 2,
+            backgroundColor: "rgba(255,255,255,0.02)",
+            gap: 2,
+          }}
+        >
+          {chatMessages.map((chat, index) => {
+            const isUser = chat.role === "user";
+            return (
+              <Box
+                key={index}
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "flex-start",
+                  gap: 1,
+                }}
+              >
+                {isUser ? (
+                  <Avatar
+                    sx={{
+                      bgcolor: "rgb(11, 132, 131)",
+                      width: 35,
+                      height: 35,
+                      fontSize: "14px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {getInitials(auth?.user?.name) || "JM"}
+                  </Avatar>
+                ) : (
+                  <Avatar
+                    src="/openai.png"
+                    alt="assistant"
+                    sx={{
+                      width: 35,
+                      height: 35,
+                      bgcolor: "white",
+                      objectFit: "contain",
+                      p: 0.5,
+                    }}
+                  />
+                )}
+
+                <Box
+                  sx={{
+                    bgcolor: isUser ? "rgb(11, 132, 131)" : "rgb(23, 37, 53)",
+                    color: "white",
+                    px: 2,
+                    py: 1,
+                    borderRadius: 2,
+                    maxWidth: "80%",
+                    fontSize: "15px",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {chat.content}
+                </Box>
+              </Box>
+            );
+          })}
+        </Box>
+        <Box>
+          <div style={{
+            width:"100%", 
+            padding:"20px", 
+            borderRadius:"8", 
+            backgroundColor:"rgb(17,27,39)",
+            display:'flex',
+            margin:'auto',
+            }}>
+              <input 
+              ref={inputRef}
+              type="text" style={{
+              width:"100%", 
+              backgroundColor:"transparent", 
+              padding:'10px', 
+              border:"none", 
+              outline:"none",
+              color:"white",
+              fontSize:"20px"
+              }}
+              />
+              <IconButton onClick={handleSubmit} sx={{ml:"auto", color:'white'}}><IoMdSend/></IconButton>
+          </div>
+         
+        </Box>
+      </Box>
+    </Box>
+  );
+};
