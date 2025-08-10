@@ -1,4 +1,3 @@
-import { response } from "express";
 import jwt from "jsonwebtoken";
 import { COOKIE_NAME } from "./constants.js";
 export const createToken = (id, email, expiresIn) => {
@@ -15,14 +14,14 @@ export const createToken = (id, email, expiresIn) => {
 };
 export const verifyToken = async (req, res, next) => {
     const token = req.signedCookies[`${COOKIE_NAME}`];
-    if (!token || token.trim() == "") {
+    if (!token || token.trim() === "") {
         return res.status(401).json({ message: "Token not received." });
     }
     return new Promise((resolve, reject) => {
-        return jwt.verify(token, process.env.JWT_SECRET, (error, success) => {
-            if (error) {
-                reject(error.message);
-                return response.status(401).json({ message: "Token Expired" });
+        return jwt.verify(token, process.env.JWT_SECRET, (err, success) => {
+            if (err) {
+                reject(err.message);
+                return res.status(401).json({ message: "Token Expired" });
             }
             else {
                 resolve();
