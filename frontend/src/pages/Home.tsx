@@ -1,7 +1,9 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import TyperAnimation from '../components/typer/TyperAnimation';
 const Home = () => {
+  const theme = useTheme();
+  const isBelowMd = useMediaQuery(theme.breakpoints.down("md"));
   return <Box width={'100%'} height={'100%'}>
     <Box sx={{display:"flex", width:"100%", flexDirection:"column", alignItems:"center", mx:"auto", mt:3}}>
       <Box><TyperAnimation></TyperAnimation></Box>
@@ -22,7 +24,7 @@ const Home = () => {
         style={{
           display:"flex", 
           margin:"auto", 
-          width:"60%", 
+          width: isBelowMd? "80%":"60%", 
           borderRadius:"40", 
           boxShadow:"-5px -5px 105px #64f3d5",
           marginTop:20,  
