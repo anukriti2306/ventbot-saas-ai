@@ -1,22 +1,43 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
 import { useAuth } from "../../context/AuthContext";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { coldarkDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+function extractCodeFromString(message: string): string[] | null {
+  if (message.includes("```")) {
+    return message.split("```");
+  }
+  return null;
+}
+
+function isCodeBlock(str: string) {
+  return (
+    str.includes("=") ||
+    str.includes(";") ||
+    str.includes("[") ||
+    str.includes("]") ||
+    str.includes("{") ||
+    str.includes("}") ||
+    str.includes("#") ||
+    str.includes("//")
+  );
+}
 
 const ChatItem = ({
   content,
-  role
+  role,
 }: {
   content: string;
   role: "user" | "assistant";
 }) => {
   const auth = useAuth();
+  const messageBlocks = extractCodeFromString(content);
 
   const getInitials = (name?: string) => {
     if (!name) return "";
     const parts = name.trim().split(" ");
-    const firstInitial = parts[0]?.[0] || "";
-    const secondInitial = parts[1]?.[0] || "";
-    return (firstInitial + secondInitial).toUpperCase();
+    return `${parts[0]?.[0] || ""}${parts[1]?.[0] || ""}`.toUpperCase();
   };
 
   const isUser = role === "user";
@@ -28,7 +49,7 @@ const ChatItem = ({
         flexDirection: isUser ? "row-reverse" : "row",
         alignItems: "flex-start",
         gap: 2,
-        my: 1.5
+        my: 1.5,
       }}
     >
       {/* Avatar */}
@@ -39,7 +60,7 @@ const ChatItem = ({
             color: "white",
             fontWeight: 700,
             width: 40,
-            height: 40
+            height: 40,
           }}
         >
           {getInitials(auth?.user?.name) || "U"}
@@ -50,7 +71,7 @@ const ChatItem = ({
             bgcolor: "white",
             width: 40,
             height: 40,
-            p: 0.5 // padding to "zoom out" the logo
+            p: 0.5,
           }}
         >
           <img
@@ -59,7 +80,7 @@ const ChatItem = ({
             style={{
               width: "100%",
               height: "100%",
-              objectFit: "contain"
+              objectFit: "contain",
             }}
           />
         </Avatar>
@@ -77,12 +98,44 @@ const ChatItem = ({
           fontFamily: "Work Sans",
           boxShadow: isUser
             ? "0 1px 3px rgba(0,0,0,0.2)"
-            : "0 1px 3px rgba(0,0,0,0.1)"
+            : "0 1px 3px rgba(0,0,0,0.1)",
         }}
       >
-        <Typography sx={{ fontSize: "16px", lineHeight: 1.5 }}>
-          {content}
-        </Typography>
+        {!messageBlocks && (
+          <Typography sx={{ fontSize: "20px" }}>{content}</Typography>
+        )}
+
+        {messageBlocks &&
+          messageBlocks.length > 0 &&
+          messageBlocks.map((block, index) => {
+            if (isCodeBlock(block)) {
+              const lines = block.trim().split("\n");
+              let language = "javascript";
+              let code = block;
+
+              // If the first line looks like a language specifier
+              if (lines.length > 1 && /^[a-zA-Z0-9+#-]+$/.test(lines[0])) {
+                language = lines[0].trim().toLowerCase();
+                code = lines.slice(1).join("\n");
+              }
+
+              return (
+                <SyntaxHighlighter
+                  key={index}
+                  style={coldarkDark}
+                  language={language}
+                >
+                  {code}
+                </SyntaxHighlighter>
+              );
+            }
+
+            return (
+              <Typography key={index} sx={{ fontSize: "20px" }}>
+                {block}
+              </Typography>
+            );
+          })}
       </Box>
     </Box>
   );
