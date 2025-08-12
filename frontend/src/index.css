@@ -10,7 +10,8 @@ body{
 }
 
 .image-inverted{
-  filter: invert(100%);  
+  filter: invert(100%); 
+  border-radius: 50%; 
 }
 
 .nav-link{

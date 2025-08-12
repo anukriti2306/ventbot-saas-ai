@@ -20,7 +20,7 @@ const Home = () => {
           my: 10,
         }}>
           <img src='home2.jpg' alt='home1' style={{ width: "200px", margin: "auto" }} />
-          <img className='image-inverted rotate' src='openai.png' alt='openai' style={{ width: "200px", margin: "auto" }} />
+          <img className='image-inverted rotate' src='openai.png' alt='openai' style={{ width: "200px", margin: "auto", borderRadius:"50%"}} />
         </Box>
 
         <Box sx={{ display: "flex", width: "100%", mx: "auto" }}>

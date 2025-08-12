@@ -142,7 +142,7 @@ export const Chat = () => {
       {/* Main Chat Area */}
       <Box sx={{ display: "flex", flex: { md: 0.75, xs: 1, sm: 1 }, flexDirection: "column", px: 3 }}>
         <Typography sx={{ textAlign: "center", fontSize: "28px", fontWeight: 600, color: "white", mb: 2 }}>
-          Model - GPT 3.5 Turbo
+          Model - llama3-8b-8192
         </Typography>
 
         <Box
