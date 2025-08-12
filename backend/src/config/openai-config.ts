@@ -1,8 +1,9 @@
-import { Configuration } from "openai";
-
+// openai-config.ts (now using Groq under the hood)
+import Groq from "groq-sdk";
+import dotenv from "dotenv";
+dotenv.config();
 export const configureOpenAi = () => {
-    return new Configuration({
-        apiKey: process.env.OPEN_AI_SECRET,
-        organization: process.env.OPEN_AI_ORGANIZATION_ID,
+    return new Groq({
+        apiKey: process.env.GROQ_API_KEY, // new env var for Groq
     });
 };
