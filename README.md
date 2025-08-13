@@ -1,6 +1,6 @@
-# MERN Stack AI Chatbot
+# MERN Stack AI Chatbot Agent for Applications in Therapy/Mental Health
 
-An **AI-powered chatbot** inspired by ChatGPT, built using the **MERN stack** (MongoDB, Express.js, React, Node.js) and integrated with the **Groq API** for fast, efficient responses.
+An **AI-powered chatbot** inspired by ChatGPT, built using the **MERN stack** (MongoDB, Express.js, React, Node.js) and integrated with the **Groq API** for fast, efficient responses, which acts as an Agentic AI therapist.
 
 ## 📌 Features
 
