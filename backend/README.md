@@ -1,9 +1,9 @@
 # 🚀 VentBot SaaS AI
-
-[![Node.js](https://img.shields.io/badge/Node.js-v20-green?logo=node.js)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-4.x-lightgrey?logo=express)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-v6-green?logo=mongodb)](https://www.mongodb.com/)
-[![Vercel](https://img.shields.io/badge/Vercel-deployed-blue?logo=vercel)](https://vercel.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-v20-339933?logo=node.js&logoColor=white&style=for-the-badge)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white&style=for-the-badge)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-v6-47A248?logo=mongodb&logoColor=white&style=for-the-badge)](https://www.mongodb.com/)
+[![Render](https://img.shields.io/badge/Render-deployed-ff3e00?logo=render&logoColor=white&style=for-the-badge)](https://render.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-deployed-000000?logo=vercel&logoColor=white&style=for-the-badge)](https://vercel.com/)
 
 ---
 
@@ -21,31 +21,29 @@ It lets users chat with AI, view conversation history, and manage their sessions
 
 ## 📦 Tech Stack
 
-- **Backend:** Node.js, Express, MongoDB
-- **Frontend:** React, Vite, MUI
-- **Deployment:** Render (backend), Vercel (frontend)
-- **Authentication:** JWT with cookies
+- **Backend:** Node.js, Express, MongoDB  
+- **Frontend:** React, Vite, MUI  
+- **Deployment:** Render (backend), Vercel (frontend)  
+- **Authentication:** JWT with cookies  
 - **AI Integration:** Groq SDK
 
 ---
 
 ## 🎨 Features
 
-- ✅ Sign Up / Login / Logout
-- ✅ Persistent chat history
-- ✅ Clear conversation button
-- ✅ Syntax-highlighted code blocks in chat
+- ✅ SIGN UP / LOGIN / LOGOUT  
+- ✅ Persistent chat history  
+- ✅ Clear conversation button  
+- ✅ Syntax-highlighted code blocks in chat  
 - ✅ CORS & secure cookie handling
 
 ---
 
-## 🔗 Try it Online
+## 🔗 TRY IT ONLINE
 
-Click the button below to access the **deployed frontend**:
-
-[![Go to Frontend](https://img.shields.io/badge/Visit%20VentBot%20Frontend-🎉-brightgreen)](https://ventbot-saas-ai.vercel.app)
-
----
+<a href="https://ventbot-saas-ai.vercel.app" target="_blank">
+  <img src="https://img.shields.io/badge/🚀%20GO%20TO%20FRONTEND-ORANGE?style=for-the-badge&logo=vercel&logoColor=white&color=ff6600&labelColor=ff9900" alt="Go to Frontend">
+</a>
 
 ## 🛠️ Getting Started (Dev Setup)
 
