@@ -9,9 +9,10 @@ config();
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173", // local dev
-  "https://ventbot-saas-ai.vercel.app" // <-- replace with actual Vercel URL
+  "http://localhost:5173",
+  process.env.FRONTEND_URL
 ];
+
 
 app.use(
   cors({
