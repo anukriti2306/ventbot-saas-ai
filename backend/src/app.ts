@@ -10,7 +10,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173", // local dev
-  "https://ventbot-saas-ai.vercel.app/" // <-- replace with actual Vercel URL
+  "https://ventbot-saas-ai.vercel.app" // <-- replace with actual Vercel URL
 ];
 
 app.use(
