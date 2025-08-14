@@ -1,107 +1,92 @@
-# MERN Stack AI Chatbot Agent for Applications in Therapy/Mental Health
-
-An **AI-powered chatbot** inspired by ChatGPT, built using the **MERN stack** (MongoDB, Express.js, React, Node.js) and integrated with the **Groq API** for fast, efficient responses, which acts as an Agentic AI therapist.
-
-## 📌 Features
-
-- **AI-Powered Conversations** – Uses Groq API to generate chatbot responses in real time.
-- **Message Persistence** – Every user message is stored in MongoDB for retrieval and deletion.
-- **User Authentication** – Secure login/signup using:
-  - JWT tokens
-  - HTTP-only cookies
-  - Signed cookies
-  - Password hashing with bcrypt
-- **Middleware Chains** – Layered request validation and security.
-- **Customizable** – Easily adapt prompts, personalities, and data handling.
-- **MERN Architecture** – Cleanly separated frontend (React) and backend (Node.js + Express).
+# 🚀 VentBot SaaS AI
+[![Node.js](https://img.shields.io/badge/Node.js-v20-339933?logo=node.js&logoColor=white&style=for-the-badge)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white&style=for-the-badge)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-v6-47A248?logo=mongodb&logoColor=white&style=for-the-badge)](https://www.mongodb.com/)
+[![Render](https://img.shields.io/badge/Render-deployed-ff3e00?logo=render&logoColor=white&style=for-the-badge)](https://render.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-deployed-000000?logo=vercel&logoColor=white&style=for-the-badge)](https://vercel.com/)
 
 ---
 
-## 🛠 Tech Stack
+## 🌟 About VentBot
 
-**Frontend**  
-- React + Vite  
-- TypeScript  
-- Axios (API calls)  
-- Context API  
-- TailwindCSS   
+VentBot is an AI-powered chatbot platform for real-time conversations.  
+It lets users chat with AI, view conversation history, and manage their sessions seamlessly.
 
-**Backend**  
-- Node.js + Express.js  
-- TypeScript  
-- MongoDB + Mongoose  
-- Groq API (AI responses)  
-- JWT & bcrypt for authentication  
-
-**Database**  
-- MongoDB Atlas  
-
+- 🧠 AI-powered chats using **Groq SDK**
+- 🔐 Secure authentication with **JWT & HttpOnly cookies**
+- 💻 Full chat history and clear conversation functionality
+- ⚡ Responsive and modern UI using **React + MUI**
 
 ---
 
-## 🚀 Getting Started
+## 📦 Tech Stack
 
-### 1. Clone the repository
+- **Backend:** Node.js, Express, MongoDB  
+- **Frontend:** React, Vite, MUI, TypeScript  
+- **Deployment:** Render (backend), Vercel (frontend)  
+- **Authentication:** JWT with cookies  
+- **AI Integration:** Groq SDK
+
+---
+
+## 🎨 Features
+
+- ✅ SIGN UP / LOGIN / LOGOUT  
+- ✅ Persistent chat history  
+- ✅ Clear conversation button  
+- ✅ Syntax-highlighted code blocks in chat  
+- ✅ CORS & secure cookie handling
+
+---
+
+## 🔗 TRY IT ONLINE
+
+<a href="https://ventbot-saas-ai.vercel.app" target="_blank">
+  <img src="https://img.shields.io/badge/🚀%20GO%20TO%20FRONTEND-ORANGE?style=for-the-badge&logo=vercel&logoColor=white&color=ff6600&labelColor=ff9900" alt="Go to Frontend">
+</a>
+
+## 🛠️ Getting Started (Dev Setup)
+
+1. **Clone the repo**
+
 ```bash
-git clone https://github.com/anukriti2306/ventbot-saas-ai.git
+git clone https://github.com/<your-username>/ventbot-saas-ai.git
 cd ventbot-saas-ai
 ```
-### 2. Install dependencies
-# Backend
+Install dependencies
 
 ```bash
 
-cd backend
 npm install
+Set environment variables
 ```
-# Frontend
+Create a .env file with:
+```
+PORT=5000
+MONGO_URI=<your-mongo-uri>
+COOKIE_SECRET=<your-cookie-secret>
+GROQ_API_KEY=<your-groq-api-key>
+FRONTEND_URL=https://ventbot-saas-ai.vercel.app
+
+```
+Run locally
 ```bash
 
-cd ../frontend
-npm install
-```
-### 3. Set up environment variables
-Create a .env file inside the server/ folder:
-
-```.env
-
-PORT=8080
-MONGODB_URI=your_mongodb_atlas_connection_string
-JWT_SECRET=your_jwt_secret
-GROQ_API_KEY=your_groq_api_key
-COOKIE_SECRET=your_cookie_secret
-```
-### 4. Run the development servers
-# Backend:
-
-```bash
-
-cd backend
 npm run dev
 ```
-# Frontend:
-
-```bash
-cd ../frontend
-npm start
+📄 API Endpoints
 ```
+POST /api/v1/user/login → Log in user
 
+POST /api/v1/user/signup → Sign up user
 
-### 🔒 Security Notes
-JWT tokens are stored in HTTP-only cookies to prevent XSS attacks.
+GET /api/v1/user/auth-status → Check auth status
 
-Passwords are hashed with bcrypt before storage.
+GET /api/v1/user/logout → Logout user
 
-Middleware chains validate and sanitize requests.
+POST /api/v1/chat/new → Send new chat
 
-API keys and secrets should never be committed to source control.
+GET /api/v1/chat/all-chats → Get user chats
 
-### 🤝 Contributing
-Contributions are welcome! Please fork the repository and create a pull request.
-Before contributing:
-
-Follow existing code style.
-
-Write clear commit messages.
-
-Test changes locally.
+DELETE /api/v1/chat/delete → Clear all chats
+```
