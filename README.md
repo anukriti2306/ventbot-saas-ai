@@ -22,7 +22,7 @@ It lets users chat with AI, view conversation history, and manage their sessions
 ## 📦 Tech Stack
 
 - **Backend:** Node.js, Express, MongoDB  
-- **Frontend:** React, Vite, MUI  
+- **Frontend:** React, Vite, MUI, TypeScript  
 - **Deployment:** Render (backend), Vercel (frontend)  
 - **Authentication:** JWT with cookies  
 - **AI Integration:** Groq SDK
