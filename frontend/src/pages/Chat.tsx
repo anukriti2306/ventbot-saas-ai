@@ -6,56 +6,72 @@ import { IoMdSend } from "react-icons/io";
 import { deleteUserChats, getUserChats, sendChatRequest } from "../helpers/api-communicator";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import ChatItem from "../components/chat/ChatItem"; // <-- new import
+
 type Message = {
-  role:"user"|"assistant";
-  content:string;
+  role: "user" | "assistant";
+  content: string;
 };
+
 export const Chat = () => {
-  const inputRef = useRef<HTMLInputElement|null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const auth = useAuth();
   const navigate = useNavigate();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
-  const handleSubmit = async() =>{
-    const content = inputRef.current?.value as string;
-    if(inputRef && inputRef.current){
+
+  const handleSubmit = async () => {
+    const content = inputRef.current?.value?.trim();
+    if (!content) return;
+
+    if (inputRef.current) {
       inputRef.current.value = "";
     }
-    const newMessage:Message = {role:"user", content};
-    setChatMessages((prev)=>[...prev, newMessage]);
-    //send the prompt to the api
-    const chatData = await sendChatRequest(content);
-    setChatMessages([...chatData.chats]);
+
+    const newMessage: Message = { role: "user", content };
+    setChatMessages((prev) => [...prev, newMessage]);
+
+    try {
+      const chatData = await sendChatRequest(content);
+      setChatMessages([...chatData.chats]);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to send message");
+    }
   };
+
   const handleDeleteChats = async () => {
-    try{
-      toast.loading("Deleting Chats",{id:"deletechats"});
+    try {
+      toast.loading("Deleting Chats", { id: "deletechats" });
       await deleteUserChats();
       setChatMessages([]);
-      toast.loading("Successfully Deleted Chats",{id:"deletechats"});
-    }catch(error){
+      toast.success("Successfully Deleted Chats", { id: "deletechats" });
+    } catch (error) {
       console.log(error);
-      toast.error("Deleting chats failed.",{id:"deletedchats"});
+      toast.error("Deleting chats failed.", { id: "deletechats" });
     }
   };
-  useLayoutEffect(()=>{
-    if(auth?.isLoggedIn && auth.user){
-      toast.loading("Loading Chats", {id:"loadchats"});
-      getUserChats().then((data)=>{
-        setChatMessages([...data.chats]);
-        toast.success("Successfully loaded chats",{id:"loadchats"});
-      }).catch(err=>{
-        console.log(err);
-        toast.error("Loading Failed.",{id:"loadchats"});
-      });
 
-      
+  useLayoutEffect(() => {
+    if (auth?.isLoggedIn && auth.user) {
+      toast.loading("Loading Chats", { id: "loadchats" });
+      getUserChats()
+        .then((data) => {
+          setChatMessages([...data.chats]);
+          toast.success("Successfully loaded chats", { id: "loadchats" });
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Loading Failed.", { id: "loadchats" });
+        });
     }
   }, [auth]);
-  useEffect(()=>{
-    if(!auth?.user){
+
+  useEffect(() => {
+    if (!auth?.user) {
       navigate("/login");
     }
-  },[auth]);
+  }, [auth]);
+
   const getInitials = (name?: string) => {
     if (!name) return "";
     const parts = name.trim().split(" ");
@@ -158,86 +174,40 @@ export const Chat = () => {
             gap: 2,
           }}
         >
-          {chatMessages.map((chat, index) => {
-            const isUser = chat.role === "user";
-            return (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "flex-start",
-                  gap: 1,
-                }}
-              >
-                {isUser ? (
-                  <Avatar
-                    sx={{
-                      bgcolor: "rgb(11, 132, 131)",
-                      width: 35,
-                      height: 35,
-                      fontSize: "14px",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {getInitials(auth?.user?.name) || "JM"}
-                  </Avatar>
-                ) : (
-                  <Avatar
-                    src="/openai.png"
-                    alt="assistant"
-                    sx={{
-                      width: 35,
-                      height: 35,
-                      bgcolor: "white",
-                      objectFit: "contain",
-                      p: 0.5,
-                    }}
-                  />
-                )}
-
-                <Box
-                  sx={{
-                    bgcolor: isUser ? "rgb(11, 132, 131)" : "rgb(23, 37, 53)",
-                    color: "white",
-                    px: 2,
-                    py: 1,
-                    borderRadius: 2,
-                    maxWidth: "80%",
-                    fontSize: "15px",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {chat.content}
-                </Box>
-              </Box>
-            );
-          })}
+          {chatMessages.map((chat, index) => (
+            <ChatItem key={index} role={chat.role} content={chat.content} />
+          ))}
         </Box>
+
+        {/* Input */}
         <Box>
-          <div style={{
-            width:"100%", 
-            padding:"20px", 
-            borderRadius:"8", 
-            backgroundColor:"rgb(17,27,39)",
-            display:'flex',
-            margin:'auto',
-            }}>
-              <input 
+          <div
+            style={{
+              width: "100%",
+              padding: "20px",
+              borderRadius: "8",
+              backgroundColor: "rgb(17,27,39)",
+              display: "flex",
+              margin: "auto",
+            }}
+          >
+            <input
               ref={inputRef}
-              type="text" style={{
-              width:"100%", 
-              backgroundColor:"transparent", 
-              padding:'10px', 
-              border:"none", 
-              outline:"none",
-              color:"white",
-              fontSize:"20px"
+              type="text"
+              style={{
+                width: "100%",
+                backgroundColor: "transparent",
+                padding: "10px",
+                border: "none",
+                outline: "none",
+                color: "white",
+                fontSize: "20px",
               }}
-              />
-              <IconButton onClick={handleSubmit} sx={{ml:"auto", color:'white'}}><IoMdSend/></IconButton>
+            />
+            <IconButton onClick={handleSubmit} sx={{ ml: "auto", color: "white" }}>
+              <IoMdSend />
+            </IconButton>
           </div>
-         
         </Box>
       </Box>
     </Box>
