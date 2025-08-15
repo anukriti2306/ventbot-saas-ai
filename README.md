@@ -8,6 +8,9 @@
 ---
 
 ## 🌟 About VentBot
+<a href="https://ventbot-saas-ai.vercel.app" target="_blank">
+  <img src="https://img.shields.io/badge/🚀%20GO%20TO%20FRONTEND-ORANGE?style=for-the-badge&logo=vercel&logoColor=white&color=ff6600&labelColor=ff9900" alt="LIVE">
+</a>
 
 VentBot is an AI-powered chatbot platform for real-time conversations.  
 It lets users chat with AI, view conversation history, and manage their sessions seamlessly.
@@ -39,11 +42,9 @@ It lets users chat with AI, view conversation history, and manage their sessions
 
 ---
 
-## 🔗 TRY IT ONLINE
 
-<a href="https://ventbot-saas-ai.vercel.app" target="_blank">
-  <img src="https://img.shields.io/badge/🚀%20GO%20TO%20FRONTEND-ORANGE?style=for-the-badge&logo=vercel&logoColor=white&color=ff6600&labelColor=ff9900" alt="Go to Frontend">
-</a>
+
+
 
 ## 🛠️ Getting Started (Dev Setup)
 
