@@ -1,48 +1,47 @@
+import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
-import { Box, Avatar, Typography } from "@mui/material";
+import { useAuth } from "../../context/AuthContext";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import ReactMarkdown from "react-markdown";
 
-type ChatItemProps = {
-  role: "user" | "assistant";
-  content: string;
-};
-
-// Function to parse a message into blocks of text/code
-function parseMessage(message: string) {
-  const regex = /```([\w+#-]*)\n([\s\S]*?)```/g;
-  const blocks: { type: "code" | "text"; content: string; language?: string }[] = [];
-  let lastIndex = 0;
-  let match;
-
-  while ((match = regex.exec(message)) !== null) {
-    if (match.index > lastIndex) {
-      blocks.push({
-        type: "text",
-        content: message.slice(lastIndex, match.index),
-      });
-    }
-    blocks.push({
-      type: "code",
-      content: match[2].trim(),
-      language: match[1] || "javascript",
-    });
-    lastIndex = regex.lastIndex;
+function extractCodeFromString(message: string): string[] | null {
+  if (message.includes("```")) {
+    return message.split("```");
   }
-
-  if (lastIndex < message.length) {
-    blocks.push({
-      type: "text",
-      content: message.slice(lastIndex),
-    });
-  }
-
-  return blocks;
+  return null;
 }
 
-const ChatItem: React.FC<ChatItemProps> = ({ role, content }) => {
+function isCodeBlock(str: string) {
+  return (
+    str.includes("=") ||
+    str.includes(";") ||
+    str.includes("[") ||
+    str.includes("]") ||
+    str.includes("{") ||
+    str.includes("}") ||
+    str.includes("#") ||
+    str.includes("//")
+  );
+}
+
+const ChatItem = ({
+  content,
+  role,
+}: {
+  content: string;
+  role: "user" | "assistant";
+}) => {
+  const auth = useAuth();
+  const messageBlocks = extractCodeFromString(content);
+
+  const getInitials = (name?: string) => {
+    if (!name) return "";
+    const parts = name.trim().split(" ");
+    return `${parts[0]?.[0] || ""}${parts[1]?.[0] || ""}`.toUpperCase();
+  };
+
   const isUser = role === "user";
-  const blocks = parseMessage(content);
 
   return (
     <Box
@@ -51,59 +50,95 @@ const ChatItem: React.FC<ChatItemProps> = ({ role, content }) => {
         flexDirection: isUser ? "row-reverse" : "row",
         alignItems: "flex-start",
         gap: 2,
-        mb: 3,
+        my: 1.5,
       }}
     >
       {/* Avatar */}
-      <Avatar
-        sx={{
-          bgcolor: isUser ? "#1976d2" : "#4caf50",
-          width: 40,
-          height: 40,
-        }}
-      >
-        {isUser ? "U" : "A"}
-      </Avatar>
+      {isUser ? (
+        <Avatar
+          sx={{
+            bgcolor: "black",
+            color: "white",
+            fontWeight: 700,
+            width: 40,
+            height: 40,
+          }}
+        >
+          {getInitials(auth?.user?.name) || "U"}
+        </Avatar>
+      ) : (
+        <Avatar
+          sx={{
+            bgcolor: "white",
+            width: 40,
+            height: 40,
+            p: 0.5,
+          }}
+        >
+          <img
+            src="/openai.png"
+            alt="assistant"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+          />
+        </Avatar>
+      )}
 
-      {/* Message content */}
+      {/* Message bubble */}
       <Box
         sx={{
-          maxWidth: "80%",
-          bgcolor: isUser ? "#e3f2fd" : "#f1f8e9",
-          p: 2,
+          bgcolor: isUser ? "#007b8a" : "#004d5612",
+          color: isUser ? "white" : "black",
           borderRadius: 2,
-          boxShadow: 1,
-          wordBreak: "break-word",
+          px: 2,
+          py: 1.2,
+          maxWidth: "70%",
+          fontFamily: "Work Sans",
+          boxShadow: isUser
+            ? "0 1px 3px rgba(0,0,0,0.2)"
+            : "0 1px 3px rgba(0,0,0,0.1)",
         }}
       >
-        {blocks.map((block, idx) =>
-          block.type === "code" ? (
-            <SyntaxHighlighter
-              key={idx}
-              style={coldarkDark}
-              language={block.language}
-              customStyle={{
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
-                borderRadius: "8px",
-                fontSize: "14px",
-              }}
-            >
-              {block.content}
-            </SyntaxHighlighter>
-          ) : (
-            <Typography
-              key={idx}
-              sx={{
-                fontSize: "16px",
-                whiteSpace: "pre-wrap",
-                color: "#333",
-              }}
-            >
-              {block.content.trim()}
-            </Typography>
-          )
+        {!messageBlocks && (
+          <Typography sx={{ fontSize: "20px" }}>
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </Typography>
         )}
+
+        {messageBlocks &&
+          messageBlocks.length > 0 &&
+          messageBlocks.map((block, index) => {
+            if (isCodeBlock(block)) {
+              const lines = block.trim().split("\n");
+              let language = "javascript";
+              let code = block;
+
+              // Detect language from first line if present
+              if (lines.length > 1 && /^[a-zA-Z0-9+#-]+$/.test(lines[0])) {
+                language = lines[0].trim().toLowerCase();
+                code = lines.slice(1).join("\n");
+              }
+
+              return (
+                <SyntaxHighlighter
+                  key={index}
+                  style={coldarkDark}
+                  language={language}
+                >
+                  {code}
+                </SyntaxHighlighter>
+              );
+            }
+
+            return (
+              <Typography key={index} sx={{ fontSize: "20px" }}>
+                <ReactMarkdown>{block}</ReactMarkdown>
+              </Typography>
+            );
+          })}
       </Box>
     </Box>
   );

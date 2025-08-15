@@ -6,7 +6,7 @@ import { IoMdSend } from "react-icons/io";
 import { deleteUserChats, getUserChats, sendChatRequest } from "../helpers/api-communicator";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import ChatItem from "../components/chat/ChatItem"; // <-- new import
+import ChatItem from "../components/chat/ChatItem";
 
 type Message = {
   role: "user" | "assistant";
@@ -202,6 +202,9 @@ export const Chat = () => {
                 outline: "none",
                 color: "white",
                 fontSize: "20px",
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSubmit();
               }}
             />
             <IconButton onClick={handleSubmit} sx={{ ml: "auto", color: "white" }}>
