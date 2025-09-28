@@ -31,7 +31,7 @@ export const generateChatCompletion = async (
     user.chats.push({ role: "user", content: message });
 
     const chatResponse = await groq.chat.completions.create({
-      model: "llama3-8b-8192",
+      model: "llama-3.1-8b-instant", // UPDATED MODEL
       messages: chats,
     });
 
@@ -53,7 +53,6 @@ export const generateChatCompletion = async (
   }
 };
 
-
 export const sendChatsToUser = async (
   req: Request,
   res: Response,
@@ -74,7 +73,7 @@ export const sendChatsToUser = async (
     return res.status(200).json({ message: "OK", chats: user.chats });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "ERROR", cause: error.message });
+    return res.status(500).json({ message: "ERROR", cause: (error as any).message });
   }
 };
 
@@ -95,14 +94,13 @@ export const deleteChats = async (
       return res.status(401).send("Permissions didn't match");
     }
 
-    // Clear all chats
-    // @ts-ignore
-    user.chats = [];
+    // Clear all chats safely while keeping DocumentArray intact
+    user.chats.splice(0, user.chats.length);
     await user.save();
 
     return res.status(200).json({ message: "OK" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "ERROR", cause: error.message });
+    return res.status(500).json({ message: "ERROR", cause: (error as any).message });
   }
 };
